@@ -1,0 +1,30 @@
+.food-display-list ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    list-style-type: none;
+}
+
+
+.food-display-list ul > li {
+    flex: 1 1 calc(25% - 2rem); /* Four items per row */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+@media (max-width: 1200px) {
+    .food-display-list ul > li {
+        flex: 1 1 calc(33.33% - 2rem); /* Three items per row on medium screens */
+    }
+}
+
+@media (max-width: 900px) {
+    .food-display-list ul > li {
+        flex: 1 1 calc(50% - 2rem); /* Two items per row on small screens */
+    }
+}
+
+@media (max-width: 600px) {
+    .food-display-list ul > li {
+        flex: 1 1 100%; /* One item per row on extra small screens */
+    }
+}

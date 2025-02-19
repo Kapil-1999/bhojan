@@ -8,7 +8,13 @@ import { StoreContext } from '../../context/StoreContext';
 const Navbar = ({setShowLogin}) => {
   const navigate = useNavigate()
   const [menu, setMenu] = useState("home");
-  const {getTotalCartAmount, token, setToken} = useContext(StoreContext);
+
+   const context = useContext(StoreContext);
+  
+      if (!context) {
+          return <p>Error: Context not found!</p>;
+      }
+  const {getTotalCartAmount, token, setToken} = context;
 
   const logout = () => {
         localStorage.removeItem("bhojantoken")

@@ -11,16 +11,22 @@ const StoreContextProvider = (props) => {
     const [token, setToken] = useState('');
     const [food_list, setFoodList] = useState([])
 
-    const addToCart = (itemId) => {
+    const addToCart = async(itemId) => {        
         if (!cartItems[itemId]) {
             setCartItems((prev) => ({ ...prev, [itemId]: 1 }))
         } else {
             setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }))
+        }         
+        if(token) {
+            await axios.post(url+ "cart/add" , {itemId}, {headers : {token}})
         }
     }
 
-    const removeToCart = (itemId) => {
-        setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }))
+    const removeToCart = async(itemId) => {
+        setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+        if(token) {
+            await axios.post(url+"cart/remove", {itemId}, {headers : {token}})
+        }
     }
 
     const getFoodList = async () => {
@@ -29,11 +35,18 @@ const StoreContextProvider = (props) => {
         setFoodList(response.data.data)
     }
 
+    const loadcartData = async(token) => {
+        let newRrl = `${url}cart/get`;
+        const response = await axios.post(newRrl, {}, {headers : {token}});
+        setCartItems(response.data.cartData)     
+    }
+
     useEffect(() => {
         async function loadData() {
             await getFoodList();
             if (localStorage.getItem('bhojantoken')) {
                 setToken(localStorage.getItem('bhojantoken'))
+                await loadcartData(localStorage.getItem('bhojantoken'))
             }
         }
         loadData()
@@ -45,8 +58,8 @@ const StoreContextProvider = (props) => {
         let totalAmount = 0;
         for (const item in cartItems) {
             if (cartItems[item] > 0) {
-                let itemInfo = food_list.find((product) => product._id === item);
-                totalAmount += itemInfo.price * cartItems[item]
+                let itemInfo = food_list?.find((product) => product._id === item);
+                totalAmount +=  itemInfo?.price * cartItems[item]
             }
         }
         return totalAmount;

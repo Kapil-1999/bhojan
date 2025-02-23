@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './place-order.css'
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const PlaceOrder = () => {
 
@@ -49,7 +50,6 @@ const PlaceOrder = () => {
     } else {
       alert("Error")
     }
-
   }
 
   const handleChange = (e) => {
@@ -58,6 +58,17 @@ const PlaceOrder = () => {
       [e.target.name]: e.target.value
     })
   }
+
+  const naviage = useNavigate()
+
+  useEffect(() => {
+    console.log(data);
+    if(!token) {
+      naviage('/cart')
+    } else if(getTotalCartAmount() === 0) {
+      naviage('/cart')
+    }
+  }, [token])
   return (
     <form className='place-order' onSubmit={placeOrder}>
       <div className="place-order-left">

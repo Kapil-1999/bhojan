@@ -16,9 +16,7 @@ const Verify = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const success = searchParams.get("success")
     const orderId = searchParams.get("orderId");
-    const navigate = useNavigate()
-    console.log(success, orderId);
-    
+    const navigate = useNavigate();   
 
     const verifyPayment = async() => {
         const response =  await axios.post(url+"order/verify", {success, orderId});

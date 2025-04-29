@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import './foodDisplay.css'
 import { StoreContext } from '../../context/StoreContext';
 import FoodItem from '../food-item/FoodItem';
+import Loader from '../loader/loader';
 
 const FoodDisplay = ({ category }) => {
     const context = useContext(StoreContext);
@@ -13,14 +14,13 @@ const FoodDisplay = ({ category }) => {
 
 
     if (!food_list) {
-        return <div>Loading...</div>;
+        return <div><Loader /></div>;
     }
     return (
         <div className='food-display' id='food-display'>
             <h2>Top Dishes near you</h2>
             <div className="food-display-list">
                 <ul>
-
                     {
                         food_list?.map((item, index) => {
                             if (category === 'All' || category === item.category) {
